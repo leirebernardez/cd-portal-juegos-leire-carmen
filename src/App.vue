@@ -1,6 +1,5 @@
 <template>
-  <div class="portal">
-    <!-- Header -->
+    <!-- Cabecera -->
     <header class="header">
       <h1>GAME PORTAL</h1>
       <div class="filters">
@@ -9,133 +8,76 @@
           <option value="newest">Sort by: Newest</option>
           <option value="oldest">Sort by: Oldest</option>
         </select>
-        <button class="filter-btn">FILTER</button>
       </div>
     </header>
 
-    <!-- Layout -->
-    <div class="layout">
-      <!-- Game list -->
-      <section class="games">
-        <div
-          v-for="(game, index) in filteredGames"
-          :key="index"
-          class="game-card"
-        >
-          <img :src="game.image" alt="cover" />
-          <div class="game-info">
-            <h3>{{ game.name }}</h3>
-            <p>{{ game.description }}</p>
-            <span class="year">{{ game.year }}</span>
-          </div>
-        </div>
-      </section>
-
-      <!-- Sidebar with Hangman and Keywords -->
-      <aside class="sidebar">
-        <section class="hangman-card">
-          <h2>Hangman</h2>
-          <Hangman />
-        </section>
-
-        <section class="keywords-card">
-          <h2>Keywords</h2>
-          <div class="keywords">
-            <span v-for="(kw, index) in keywords" :key="index" class="tag">
-              {{ kw }}
-            </span>
-          </div>
-        </section>
-      </aside>
-    </div>
-  </div>
+    <!-- Aquí carga cada vista según la ruta -->
+    <router-view 
+    :search="search" 
+    :sort="sort" 
+    @updateKeywords="updateKeywords"
+    />
+    
+    <!-- El footer SIEMPRE abajo -->
+    <Footer :keywords="keywords" />
 </template>
 
 <script>
-import Hangman from "./components/Hangman.vue";
+import Footer from "./components/Footer.vue";
 
 export default {
-  components: { Hangman },
+  name: "App",
+  components: { Footer },
   data() {
     return {
       search: "",
       sort: "newest",
-      games: [
-        {
-          name: "Marvel’s Spider-Man 2",
-          description:
-            "Accompany Peter Parker and Miles Morales in a new open world adventure",
-          year: 2023,
-          image: "https://via.placeholder.com/80x100.png?text=Spiderman"
-        },
-        {
-          name: "EA Sports FC (FIFA)",
-          description:
-            "Soccer simulation game with competitive and club modes",
-          year: 2023,
-          image: "https://via.placeholder.com/80x100.png?text=FIFA"
-        },
-        {
-          name: "LEGO Star Wars: The Skywalker Saga",
-          description: "Relive all 9 films of the LEGO series in this adventure",
-          year: 2022,
-          image: "https://via.placeholder.com/80x100.png?text=LEGO"
-        },
-        {
-          name: "Animal Crossing: New Horizons",
-          description:
-            "Create your own island in this simulation with anthropomorphic animals",
-          year: 2020,
-          image: "https://via.placeholder.com/80x100.png?text=ACNH"
-        }
-      ],
-      keywords: ["open-world", "soccer", "adventure", "action", "simulation"]
+      keywords: [] 
     };
   },
-  computed: {
-    filteredGames() {
-      let list = this.games.filter((g) =>
-        g.name.toLowerCase().includes(this.search.toLowerCase())
-      );
-      if (this.sort === "newest") {
-        return list.sort((a, b) => b.year - a.year);
-      } else {
-        return list.sort((a, b) => a.year - b.year);
-      }
+  methods: {
+    updateKeywords(newKeywords) {
+      this.keywords = newKeywords;
     }
   }
 };
 </script>
-
-<style scoped>
-/* General */
-.portal {
-  background: #0f172a;
-  color: #e2e8f0;
+<style>
+html, body {
+  margin: 0;
+  padding: 0;
+  height: 100%;
+  width: 100%;
+  background-color: #0f172a; /* azul marino */
+  color: white;
   font-family: "Poppins", "Segoe UI", sans-serif;
-  min-height: 100vh;
-  display: flex;          /* Para que el contenido pueda expandirse */
-  flex-direction: column; 
-  width: 100vw;           /* Ocupa todo el ancho de la pantalla */
+  overflow-x: auto;
 }
 
-
-/* Header */
+/* Cabecera fija */
 .header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: #0f172a;
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 20px;
+  padding: 15px 40px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  z-index: 1000;
 }
 
 .header h1 {
-  font-size: 28px;
+  font-size: 50px;
   font-weight: bold;
 }
 
+/* Busqueda cabecera */
 .filters {
   display: flex;
-  gap: 10px;
+  gap: 15px;
 }
 
 .filters input,
@@ -143,21 +85,11 @@ export default {
   background: #1e293b;
   border: 1px solid #334155;
   color: white;
-  padding: 8px;
-  border-radius: 6px;
+  padding: 12px 16px;
+  border-radius: 10px;
 }
 
-.filter-btn {
-  background: #10b981; /* verde */
-  border: none;
-  color: white;
-  padding: 8px 16px;
-  border-radius: 6px;
-  font-weight: bold;
-  cursor: pointer;
-}
 
-/* Layout */
 .layout {
   display: grid;
   grid-template-columns: 2fr 1fr; /* izquierda y derecha */
@@ -166,35 +98,42 @@ export default {
   width: 100vw;
   max-width: 100%;  /* límite de ancho */
   overflow-x:hidden;
-  margin: 0 auto;     /* centra horizontalmente */
+  margin-top: 130px;    /* centra horizontalmente */
   padding: 20px;
   box-sizing: border-box;
 }
 
-/* Games list */
+/* Lista de juegos */
 .games {
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* 3 columnas */
+  gap: 20px; /* espacio entre las cards */
+  padding-bottom: 100px;
+
+  max-width: 1200px;   /* ancho máximo del grid */
+  margin: 0 auto;      /* centra el grid horizontalmente */
+  width: 100%;         /* ocupa todo el ancho hasta el max-width */
+  box-sizing: border-box;
 }
+
 
 .game-card {
   display: flex;
-  gap: 10px;
+  gap: 15px;
   background: #1e293b;
-  padding: 10px;
-  border-radius: 8px;
+  padding: 15px;
+  border-radius: 10px;
 }
 
 .game-card img {
   width: 80px;
   height: 100px;
-  border-radius: 6px;
+  border-radius: 8px;
 }
 
 .game-info h3 {
   margin: 0;
-  font-size: 16px;
+  font-size: 18px;
   font-weight: bold;
 }
 
@@ -205,37 +144,39 @@ export default {
 }
 
 .year {
-  font-size: 12px;
+  font-size: 13px;
   color: #94a3b8;
 }
 
-/* Sidebar */
-.sidebar {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
+.actions {
+  margin-top: 10px;
 }
-
-.hangman-card,
-.keywords-card {
-  background: #1e293b;
-  border-radius: 8px;
-  padding: 15px;
-}
-
-.keywords {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-}
-
-.tag {
+/*Botón de jugar */
+.play-btn {
+  display: inline-block;
+  margin-top: 5px;
+  padding: 6px 12px;
   background: #10b981;
-  padding: 4px 10px;
-  border-radius: 12px;
-  font-size: 12px;
-  color: white;
+  border-radius: 6px;
+  font-size: 14px;
   font-weight: bold;
+  color: white;
+  text-decoration: none;
+  transition: background 0.2s;
 }
 
+.play-btn:hover {
+  background: #059669;
+}
+/* Footer */
+.app-footer {
+  background-color: #1e293b;
+  color: #fff;
+  padding: 20px;
+  text-align: center;
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
 </style>
