@@ -131,8 +131,6 @@ html, body {
   
 }
 
-#app{ display:block !important;}
-
 /*Estilo letras juegos*/
 .game-info h3 {
   margin: 0;
