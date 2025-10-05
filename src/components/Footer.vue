@@ -1,10 +1,14 @@
-
 <template>
   <footer class="app-footer">
     <section class="keywords-card">
       <h2>Keywords</h2>
       <div class="keywords">
-        <span v-for="(kw, index) in keywords" :key="index" class="tag">
+        <span 
+          v-for="(kw, index) in keywords" 
+          :key="index" 
+          class="tag"
+          @click="$emit('filterByKeyword', kw)"
+        >
           {{ kw }}
         </span>
       </div>
@@ -25,11 +29,10 @@ export default {
 </script>
 
 <style>
-
 .keywords-card h2 {
   margin-bottom: 12px;
   font-size: 18px;
-  color: #f1f4f7; /* gris claro */
+  color: #f1f4f7;
 }
 
 .keywords {
@@ -39,11 +42,17 @@ export default {
 }
 
 .tag {
-  background-color: #10b981; /* azul-gris más claro */
+  background-color: #10b981;
   color: #fff;
   padding: 6px 14px;
   border-radius: 20px;
   font-size: 14px;
   font-weight: 500;
+  cursor: pointer;
+  transition: background 0.2s;
+}
+
+.tag:hover {
+  background-color: #059669;
 }
 </style>

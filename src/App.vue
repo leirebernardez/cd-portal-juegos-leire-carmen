@@ -1,9 +1,17 @@
 <template>
+  <div class="layout">
     <!-- Cabecera -->
     <header class="header">
-      <h1>GAME PORTAL</h1>
+      <router-link to="/" class="title-link">
+        <h1>GAME PORTAL</h1>
+      </router-link>
+
       <div class="filters">
-        <input type="text" placeholder="Search games" v-model="search" />
+        <input
+          type="text"
+          placeholder="Search games"
+          v-model="search"
+        />
         <select v-model="sort">
           <option value="newest">Sort by: Newest</option>
           <option value="oldest">Sort by: Oldest</option>
@@ -11,15 +19,22 @@
       </div>
     </header>
 
-    <!-- Aquí carga cada vista según la ruta -->
-    <router-view 
-    :search="search" 
-    :sort="sort" 
-    @updateKeywords="updateKeywords"
+    <!-- Contenedor principal -->
+    <main>
+      <router-view
+        :search="search"
+        :sort="sort"
+        @updateKeywords="updateKeywords"
+        :key="$route.fullPath"
+      />
+    </main>
+
+    <!-- Footer siempre abajo -->
+    <Footer
+      :keywords="keywords"
+      @filterByKeyword="filterGamesByKeyword"
     />
-    
-    <!-- El footer SIEMPRE abajo -->
-    <Footer :keywords="keywords" />
+  </div>
 </template>
 
 <script>
@@ -32,23 +47,34 @@ export default {
     return {
       search: "",
       sort: "newest",
-      keywords: [] 
+      keywords: []
     };
   },
   methods: {
     updateKeywords(newKeywords) {
       this.keywords = newKeywords;
+    },
+    filterGamesByKeyword(keyword) {
+      this.search = keyword; // activa el filtro al hacer clic en una keyword
     }
+  },
+  mounted() {
+    this.$router.afterEach((to) => {
+      if (to.path === "/") {
+        this.search = "";
+        this.sort = "newest";
+      }
+    });
   }
 };
 </script>
 
 <style>
-
-html, body {
+html,
+body {
   margin: 0;
   padding: 0;
-  background-color: #0f172a; 
+  background-color: #0f172a;
   color: white;
   box-sizing: border-box;
 }
@@ -73,12 +99,10 @@ html, body {
   font-weight: bold;
 }
 
-/* Busqueda cabecera */
+/* Búsqueda en cabecera */
 .filters {
   display: flex;
   gap: 15px;
-
-  
 }
 
 .filters input,
@@ -90,22 +114,20 @@ html, body {
   border-radius: 10px;
 }
 
-.layout{
+.layout {
   width: 100%;
   margin-top: 130px;
-  padding-bottom:50px
+  padding-bottom: 50px;
 }
-
 
 /* Lista de juegos */
 .games {
   display: grid;
-  grid-template-columns: repeat(3, 1fr); /* 3 columnas */
+  grid-template-columns: repeat(3, 1fr);
   gap: 10px;
-  padding-bottom: 100px; 
-  width: 100%;         
+  padding-bottom: 100px;
+  width: 100%;
 }
-
 
 .game-card {
   display: flex;
@@ -117,10 +139,10 @@ html, body {
 }
 
 .cover {
-  width: 160px;           
-  aspect-ratio: 1 / 1;   
+  width: 160px;
+  aspect-ratio: 1 / 1;
   border-radius: 12px;
-  overflow: hidden;   
+  overflow: hidden;
   flex-shrink: 0;
 }
 
@@ -128,10 +150,9 @@ html, body {
   width: 100%;
   height: 100%;
   display: block;
-  
 }
 
-/*Estilo letras juegos*/
+/* Estilo letras juegos */
 .game-info h3 {
   margin: 0;
   font-size: 18px;
@@ -152,7 +173,8 @@ html, body {
 .actions {
   margin-top: 10px;
 }
-/*Botón de jugar */
+
+/* Botón de jugar */
 .play-btn {
   display: inline-block;
   margin-top: 5px;
@@ -169,20 +191,17 @@ html, body {
 .play-btn:hover {
   background: #059669;
 }
+
 /* Footer */
-footer{
+footer {
   position: fixed;
-  bottom: 0; left: 0; right: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   background: #1e293b;
   color: #fff;
   padding: 15px;
   text-align: center;
-  border-top: 0.5px solid rgba(255,255,255,.08);
-  
+  border-top: 0.5px solid rgba(255, 255, 255, 0.08);
 }
-
-
-
-
-
 </style>
