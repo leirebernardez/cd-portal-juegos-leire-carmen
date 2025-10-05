@@ -1,3 +1,4 @@
+
 <template>
   <footer class="app-footer">
     <section class="keywords-card">
@@ -33,7 +34,6 @@ export default {
 
 .keywords {
   display: flex;
-  flex-wrap: wrap;
   justify-content: center;
   gap: 10px;
 }

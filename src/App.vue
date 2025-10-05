@@ -42,16 +42,15 @@ export default {
   }
 };
 </script>
+
 <style>
+
 html, body {
   margin: 0;
   padding: 0;
-  height: 100%;
-  width: 100%;
-  background-color: #0f172a; /* azul marino */
+  background-color: #0f172a; 
   color: white;
-  font-family: "Poppins", "Segoe UI", sans-serif;
-  overflow-x: auto;
+  box-sizing: border-box;
 }
 
 /* Cabecera fija */
@@ -78,6 +77,8 @@ html, body {
 .filters {
   display: flex;
   gap: 15px;
+
+  
 }
 
 .filters input,
@@ -89,48 +90,50 @@ html, body {
   border-radius: 10px;
 }
 
-
-.layout {
-  display: grid;
-  grid-template-columns: 2fr 1fr; /* izquierda y derecha */
-  gap: 20px;
-
-  width: 100vw;
-  max-width: 100%;  /* límite de ancho */
-  overflow-x:hidden;
-  margin-top: 130px;    /* centra horizontalmente */
-  padding: 20px;
-  box-sizing: border-box;
+.layout{
+  width: 100%;
+  margin-top: 130px;
+  padding-bottom:50px
 }
+
 
 /* Lista de juegos */
 .games {
   display: grid;
   grid-template-columns: repeat(3, 1fr); /* 3 columnas */
-  gap: 20px; /* espacio entre las cards */
-  padding-bottom: 100px;
-
-  max-width: 1200px;   /* ancho máximo del grid */
-  margin: 0 auto;      /* centra el grid horizontalmente */
-  width: 100%;         /* ocupa todo el ancho hasta el max-width */
-  box-sizing: border-box;
+  gap: 10px;
+  padding-bottom: 100px; 
+  width: 100%;         
 }
 
 
 .game-card {
   display: flex;
-  gap: 15px;
+  gap: 12px;
   background: #1e293b;
-  padding: 15px;
-  border-radius: 10px;
+  padding: 16px;
+  border-radius: 12px;
+  align-items: center;
 }
 
-.game-card img {
-  width: 80px;
-  height: 100px;
-  border-radius: 8px;
+.cover {
+  width: 160px;           
+  aspect-ratio: 1 / 1;   
+  border-radius: 12px;
+  overflow: hidden;   
+  flex-shrink: 0;
 }
 
+.cover img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  
+}
+
+#app{ display:block !important;}
+
+/*Estilo letras juegos*/
 .game-info h3 {
   margin: 0;
   font-size: 18px;
@@ -169,14 +172,19 @@ html, body {
   background: #059669;
 }
 /* Footer */
-.app-footer {
-  background-color: #1e293b;
-  color: #fff;
-  padding: 20px;
-  text-align: center;
+footer{
   position: fixed;
-  bottom: 0;
-  left: 0;
-  right: 0;
+  bottom: 0; left: 0; right: 0;
+  background: #1e293b;
+  color: #fff;
+  padding: 15px;
+  text-align: center;
+  border-top: 0.5px solid rgba(255,255,255,.08);
+  
 }
+
+
+
+
+
 </style>
