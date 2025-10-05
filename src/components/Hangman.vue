@@ -1,11 +1,13 @@
-<<template>
+<template>
   <div class="hangman">
     <h2>Juego del Ahorcado</h2>
 
     <!-- Imagen del estado actual -->
     <img :src="currentImage" alt="Ahorcado" class="hangman-image" />
 
-    <button @click="resetGame">Nueva partida</button>
+    <div class="button-container">
+      <button @click="resetGame">Nueva partida</button>
+    </div>
 
     <p>
       Palabra:
@@ -128,11 +130,29 @@ export default {
 .hangman {
   text-align: center;
   margin-top: 20px;
+  background: #1e293b;
+  border-radius: 12px;
+  align-items: center;
+  gap: 12px;
+  padding: 16px;
+
+}
+
+h2 {
+  margin: 0;
+  font-size: 30px;
+  font-weight: bold;
+  padding-bottom: 15px;
 }
 
 .hangman-image {
-  width: 200px;
-  margin-bottom: 15px;
+  width: 250px;
+  
+}
+
+.button-container {
+  text-align: center; 
+  margin-top: 10px; 
 }
 
 .letter {
@@ -145,6 +165,7 @@ export default {
 input {
   margin-top: 10px;
   padding: 5px;
+  margin-bottom: 10px;
 }
 
 button {
@@ -155,4 +176,13 @@ button {
 .game-over {
   margin-top: 15px;
 }
+
+input {
+  background-color: #1e293b;
+  border: 1px solid #ffffff;
+  color: white;
+  border-radius: 5px;
+  padding: 6px 8px;
+}
+
 </style>

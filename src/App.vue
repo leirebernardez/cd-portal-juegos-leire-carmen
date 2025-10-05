@@ -175,7 +175,7 @@ body {
 }
 
 /* Botón de jugar */
-.play-btn {
+button , .play-btn {
   display: inline-block;
   margin-top: 5px;
   padding: 6px 12px;
